@@ -111,32 +111,24 @@ float f0(float *data, const int L, const float threshold)
   //Array do espectro bilateral de fourier
   Point data_fft[l];
 
-  // float ymax = -1;
   //Construção do espectro bilateral de fourier
   for(int i = left; i <= rigth; i += 2) {
     data_fft[(i-left)/2].x = i/2;
     data_fft[(i-left)/2].y = sqrt(data[i]*data[i] + data[i+1]*data[i+1]);
-    // ymax = max(ymax, data_fft[j].y);
-    // printf("%lf %lf\n", (i/2)/(L*Ts), data_fft[i/2]);
   }
 
   heapsort(data_fft, l); //Ordenação de modo decrescente
 
   Point pico = data_fft[0];
   float ymax = pico.y;
-  // printf("%lf %lf\n", pico.x/(L*Ts), pico.y/ymax);
+  
   for(int i = 0; i < l; i++) {
-
-    // printf("%lf %lf\n", data_fft[i].x/(L*Ts), data_fft[i].y/ymax);
 
     if((data_fft[i].y/ymax) < threshold)
       break;
 
-    // printf("%lf\n", data_fft[i].y/ymax);
-
     if((pico.x - data_fft[i].x) >= delta) {
       pico = data_fft[i];
-      // printf("%lf %lf\n", pico.x/(L*Ts), pico.y/ymax);
     }
 
   }
